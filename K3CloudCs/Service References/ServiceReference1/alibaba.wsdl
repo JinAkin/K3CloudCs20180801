@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:dto="http://dto.product.api.alibaba.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://alibaba-product-get.product.api.alibaba.com" xmlns:c="http://common.api.alibaba.com" targetNamespace="http://alibaba-product-get.product.api.alibaba.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://common.api.alibaba.com">
+      <xsd:element name="ApiExceptionInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="requestId" nillable="true" type="xsd:string" />
+            <xsd:element name="errorCode" nillable="true" type="xsd:string" />
+            <xsd:element name="errorMessage" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ApiInvocationProperty">
+        <xsd:sequence>
+          <xsd:element name="key" nillable="true" type="xsd:string" />
+          <xsd:element name="value" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfApiInvocationProperty">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="c:ApiInvocationProperty" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://alibaba-product-get.product.api.alibaba.com">
+      <xsd:element name="invoke">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="arg" nillable="true" type="dto:AlibabaProductGetRequest" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="invokeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="result" nillable="true" type="dto:AlibabaProductGetResponse" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.product.api.alibaba.com">
+      <xsd:complexType name="ArrayOfProductPriceRange">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="dto:ProductPriceRange" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProductSKUInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="dto:ProductSKUInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductInfo">
+        <xsd:sequence>
+          <xsd:element name="productID" nillable="true" type="xsd:long" />
+          <xsd:element name="productType" nillable="true" type="xsd:string" />
+          <xsd:element name="categoryID" nillable="true" type="xsd:long" />
+          <xsd:element name="attributes" nillable="true" type="dto:ArrayOfProductAttribute" />
+          <xsd:element name="groupID" nillable="true" type="dto:ArrayOfLong" />
+          <xsd:element name="status" nillable="true" type="xsd:string" />
+          <xsd:element name="subject" nillable="true" type="xsd:string" />
+          <xsd:element name="description" nillable="true" type="xsd:string" />
+          <xsd:element name="language" nillable="true" type="xsd:string" />
+          <xsd:element name="periodOfValidity" nillable="true" type="xsd:int" />
+          <xsd:element name="bizType" nillable="true" type="xsd:int" />
+          <xsd:element name="pictureAuth" nillable="true" type="xsd:boolean" />
+          <xsd:element name="image" nillable="true" type="dto:ProductImageInfo" />
+          <xsd:element name="skuInfos" nillable="true" type="dto:ArrayOfProductSKUInfo" />
+          <xsd:element name="saleInfo" nillable="true" type="dto:ProductSaleInfo" />
+          <xsd:element name="shippingInfo" nillable="true" type="dto:ProductShippingInfo" />
+          <xsd:element name="internationalTradeInfo" nillable="true" type="dto:ProductInternationalTradeInfo" />
+          <xsd:element name="extendInfos" nillable="true" type="dto:ArrayOfProductExtendInfo" />
+          <xsd:element name="qualityLevel" nillable="true" type="xsd:int" />
+          <xsd:element name="categoryName" nillable="true" type="xsd:string" />
+          <xsd:element name="mainVedio" nillable="true" type="xsd:string" />
+          <xsd:element name="productCargoNumber" nillable="true" type="xsd:string" />
+          <xsd:element name="crossBorderOffer" nillable="true" type="xsd:boolean" />
+          <xsd:element name="createTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="lastUpdateTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="expireTime" nillable="true" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SKUAttrInfo">
+        <xsd:sequence>
+          <xsd:element name="attributeID" nillable="true" type="xsd:long" />
+          <xsd:element name="attValueID" nillable="true" type="xsd:long" />
+          <xsd:element name="attributeValue" nillable="true" type="xsd:string" />
+          <xsd:element name="customValueName" nillable="true" type="xsd:string" />
+          <xsd:element name="skuImageUrl" nillable="true" type="xsd:string" />
+          <xsd:element name="attributeDisplayName" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductShippingInfo">
+        <xsd:sequence>
+          <xsd:element name="freightTemplateID" nillable="true" type="xsd:long" />
+          <xsd:element name="unitWeight" nillable="true" type="xsd:double" />
+          <xsd:element name="packageSize" nillable="true" type="xsd:string" />
+          <xsd:element name="volume" nillable="true" type="xsd:int" />
+          <xsd:element name="handlingTime" nillable="true" type="xsd:int" />
+          <xsd:element name="sendGoodsAddressId" nillable="true" type="xsd:long" />
+          <xsd:element name="sendGoodsAddressText" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductPriceRange">
+        <xsd:sequence>
+          <xsd:element name="startQuantity" nillable="true" type="xsd:int" />
+          <xsd:element name="price" nillable="true" type="xsd:double" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AlibabaProductGetResponse">
+        <xsd:sequence>
+          <xsd:element name="requestId" nillable="true" type="xsd:string" />
+          <xsd:element name="bizId" nillable="true" type="xsd:string" />
+          <xsd:element name="result" nillable="true" type="dto:AlibabaProductGetResult" />
+          <xsd:element name="properties" nillable="true" type="c:ArrayOfApiInvocationProperty" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductInternationalTradeInfo">
+        <xsd:sequence>
+          <xsd:element name="fobCurrency" nillable="true" type="xsd:string" />
+          <xsd:element name="fobMinPrice" nillable="true" type="xsd:string" />
+          <xsd:element name="fobMaxPrice" nillable="true" type="xsd:string" />
+          <xsd:element name="fobUnitType" nillable="true" type="xsd:string" />
+          <xsd:element name="paymentMethods" nillable="true" type="dto:ArrayOfString" />
+          <xsd:element name="minOrderQuantity" nillable="true" type="xsd:int" />
+          <xsd:element name="minOrderUnitType" nillable="true" type="xsd:string" />
+          <xsd:element name="supplyQuantity" nillable="true" type="xsd:int" />
+          <xsd:element name="supplyUnitType" nillable="true" type="xsd:string" />
+          <xsd:element name="supplyPeriodType" nillable="true" type="xsd:string" />
+          <xsd:element name="deliveryPort" nillable="true" type="xsd:string" />
+          <xsd:element name="deliveryTime" nillable="true" type="xsd:string" />
+          <xsd:element name="consignmentDate" nillable="true" type="xsd:int" />
+          <xsd:element name="packagingDesc" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProductAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="dto:ProductAttribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProductExtendInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="dto:ProductExtendInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductExtendInfo">
+        <xsd:sequence>
+          <xsd:element name="key" nillable="true" type="xsd:string" />
+          <xsd:element name="value" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductAttribute">
+        <xsd:sequence>
+          <xsd:element name="attributeID" nillable="true" type="xsd:long" />
+          <xsd:element name="attributeName" nillable="true" type="xsd:string" />
+          <xsd:element name="valueID" nillable="true" type="xsd:long" />
+          <xsd:element name="value" nillable="true" type="xsd:string" />
+          <xsd:element name="isCustom" nillable="true" type="xsd:boolean" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductBizGroupInfo">
+        <xsd:sequence>
+          <xsd:element name="support" nillable="true" type="xsd:boolean" />
+          <xsd:element name="description" nillable="true" type="xsd:string" />
+          <xsd:element name="code" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProductBizGroupInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="dto:ProductBizGroupInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AlibabaProductGetParams">
+        <xsd:sequence>
+          <xsd:element name="productID" nillable="true" type="xsd:long" />
+          <xsd:element name="webSite" nillable="true" type="xsd:string" />
+          <xsd:element name="scene" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AlibabaProductGetRequest">
+        <xsd:sequence>
+          <xsd:element name="accessToken" nillable="true" type="xsd:string" />
+          <xsd:element name="aopTimestamp" nillable="true" type="xsd:long" />
+          <xsd:element name="params" nillable="true" type="dto:AlibabaProductGetParams" />
+          <xsd:element name="properties" nillable="true" type="c:ArrayOfApiInvocationProperty" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductSaleInfo">
+        <xsd:sequence>
+          <xsd:element name="supportOnlineTrade" nillable="true" type="xsd:boolean" />
+          <xsd:element name="mixWholeSale" nillable="true" type="xsd:boolean" />
+          <xsd:element name="saleType" nillable="true" type="xsd:string" />
+          <xsd:element name="priceAuth" nillable="true" type="xsd:boolean" />
+          <xsd:element name="priceRanges" nillable="true" type="dto:ArrayOfProductPriceRange" />
+          <xsd:element name="amountOnSale" nillable="true" type="xsd:double" />
+          <xsd:element name="unit" nillable="true" type="xsd:string" />
+          <xsd:element name="minOrderQuantity" nillable="true" type="xsd:int" />
+          <xsd:element name="batchNumber" nillable="true" type="xsd:int" />
+          <xsd:element name="retailprice" nillable="true" type="xsd:double" />
+          <xsd:element name="tax" nillable="true" type="xsd:string" />
+          <xsd:element name="sellunit" nillable="true" type="xsd:string" />
+          <xsd:element name="quoteType" nillable="true" type="xsd:int" />
+          <xsd:element name="consignPrice" nillable="true" type="xsd:double" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductImageInfo">
+        <xsd:sequence>
+          <xsd:element name="images" nillable="true" type="dto:ArrayOfString" />
+          <xsd:element name="isWatermark" nillable="true" type="xsd:boolean" />
+          <xsd:element name="isWatermarkFrame" nillable="true" type="xsd:boolean" />
+          <xsd:element name="watermarkPosition" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProductSKUInfo">
+        <xsd:sequence>
+          <xsd:element name="attributes" nillable="true" type="dto:ArrayOfSKUAttrInfo" />
+          <xsd:element name="cargoNumber" nillable="true" type="xsd:string" />
+          <xsd:element name="amountOnSale" nillable="true" type="xsd:int" />
+          <xsd:element name="retailPrice" nillable="true" type="xsd:double" />
+          <xsd:element name="price" nillable="true" type="xsd:double" />
+          <xsd:element name="priceRange" nillable="true" type="dto:ArrayOfProductPriceRange" />
+          <xsd:element name="skuCode" nillable="true" type="xsd:string" />
+          <xsd:element name="skuId" nillable="true" type="xsd:long" />
+          <xsd:element name="specId" nillable="true" type="xsd:string" />
+          <xsd:element name="consignPrice" nillable="true" type="xsd:double" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AlibabaProductGetResult">
+        <xsd:sequence>
+          <xsd:element name="productInfo" nillable="true" type="dto:ProductInfo" />
+          <xsd:element name="bizGroupInfos" nillable="true" type="dto:ArrayOfProductBizGroupInfo" />
+          <xsd:element name="createTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="lastUpdateTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="lastRepostTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="approvedTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="expireTime" nillable="true" type="xsd:dateTime" />
+          <xsd:element name="errMsg" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfSKUAttrInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="dto:SKUAttrInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLong">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="arrayElement" nillable="true" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="AlibabaProductGetRequestMessage">
+    <wsdl:part name="arg" element="tns:invoke" />
+  </wsdl:message>
+  <wsdl:message name="AlibabaProductGetResponseMessage">
+    <wsdl:part name="result" element="tns:invokeResponse" />
+  </wsdl:message>
+  <wsdl:message name="AlibabaProductGetException">
+    <wsdl:part name="apiExceptionInfo" element="c:ApiExceptionInfo" />
+  </wsdl:message>
+  <wsdl:portType name="AlibabaProductGetPort">
+    <wsdl:operation name="invoke">
+      <wsdl:input name="invoke" message="tns:AlibabaProductGetRequestMessage" />
+      <wsdl:output name="invokeResponse" message="tns:AlibabaProductGetResponseMessage" />
+      <wsdl:fault name="AlibabaProductGetException" message="tns:AlibabaProductGetException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AlibabaProductGetBinding" type="tns:AlibabaProductGetPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="invoke">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AlibabaProductGetException">
+        <soap:fault use="literal" name="AlibabaProductGetException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AlibabaProductGet">
+    <wsdl:port name="AlibabaProductGetHttpPort" binding="tns:AlibabaProductGetBinding">
+      <soap:address location="https://gw.open.1688.com/wsapi/1/com.alibaba.product/alibaba.product.get" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

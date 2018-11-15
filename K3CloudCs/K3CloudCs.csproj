@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8987021A-B110-46DB-88FB-A46A723A25DF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>K3CloudCs</RootNamespace>
+    <AssemblyName>K3CloudCs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>K3CloudCs.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>default.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Kingdee.BOS.WebApi.Client">
+      <HintPath>bin\Kingdee.BOS.WebApi.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class\Store.cs" />
+    <Compile Include="Class\Supper.cs" />
+    <Compile Include="Class\tid_item.cs" />
+    <Compile Include="DAL\EdbLib.cs" />
+    <Compile Include="DAL\Edb_OUTSTOCK_DAL.cs" />
+    <Compile Include="DAL\Edb_RETURNSTOCK_DAL.cs" />
+    <Compile Include="DAL\Edb_STKTRANSFERIN_DAL.cs" />
+    <Compile Include="DAL\Edb_STKTRANSFEROUT_DAL.cs" />
+    <Compile Include="DAL\Order_Dal.cs" />
+    <Compile Include="DAL\Shop_DAL.cs" />
+    <Compile Include="DAL\Supper_DAL.cs" />
+    <Compile Include="DAL\Store_DAL.cs" />
+    <Compile Include="Form\FrmCheckListCust.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmCheckListCust.Designer.cs">
+      <DependentUpon>FrmCheckListCust.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmSupper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmSupper.Designer.cs">
+      <DependentUpon>FrmSupper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmStore.Designer.cs">
+      <DependentUpon>FrmStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmShop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmShop.Designer.cs">
+      <DependentUpon>FrmShop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmCheckListPar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmCheckListPar.Designer.cs">
+      <DependentUpon>FrmCheckListPar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmCheckListStock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmCheckListStock.Designer.cs">
+      <DependentUpon>FrmCheckListStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmCheckListSupper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmCheckListSupper.Designer.cs">
+      <DependentUpon>FrmCheckListSupper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FrmParSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmParSet.Designer.cs">
+      <DependentUpon>FrmParSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\SAL_OUTSTOCK_DAL.cs" />
+    <Compile Include="DAL\SAL_RETURNSTOCK_DAL.cs" />
+    <Compile Include="Form\FrmOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmOrder.Designer.cs">
+      <DependentUpon>FrmOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Class\Edb_RETURNSTOCK.cs" />
+    <Compile Include="Helper\ConfigHelper.cs" />
+    <Compile Include="Helper\ExcelHelper.cs" />
+    <Compile Include="Helper\LogHelper.cs" />
+    <Compile Include="Class\Material_Object.cs" />
+    <Compile Include="Class\K3CloudMaterial.cs" />
+    <Compile Include="Class\Shop.cs" />
+    <Compile Include="Helper\SqlHelper.cs" />
+    <Compile Include="Class\Item.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Class\SAL_OUTSTOCK_Object.cs" />
+    <Compile Include="Class\SAL_RETURNSTOCK_Object.cs" />
+    <Compile Include="Service References\ServiceReference1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Form\FrmCheckListCust.resx">
+      <DependentUpon>FrmCheckListCust.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmSupper.resx">
+      <DependentUpon>FrmSupper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmStore.resx">
+      <DependentUpon>FrmStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmShop.resx">
+      <DependentUpon>FrmShop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmCheckListPar.resx">
+      <DependentUpon>FrmCheckListPar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmCheckListStock.resx">
+      <DependentUpon>FrmCheckListStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmCheckListSupper.resx">
+      <DependentUpon>FrmCheckListSupper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmParSet.resx">
+      <DependentUpon>FrmParSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FrmOrder.resx">
+      <DependentUpon>FrmOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Log4Net.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Service References\ServiceReference1\alibaba.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="default.ico" />
+    <None Include="Service References\ServiceReference1\K3CloudCs.ServiceReference1.invokeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\K3CloudCs.ServiceReference1.invokeResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
