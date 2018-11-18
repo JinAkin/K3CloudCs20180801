@@ -212,7 +212,7 @@ namespace K3CloudCs
                     //一次批量的插入的数据量
                     sqlBC.BatchSize = 1000;
                     //超时之前操作完成所允许的秒数，如果超时则事务不会提交 ，数据将回滚，所有已复制的行都会从目标表中移除
-                    sqlBC.BulkCopyTimeout = 300;
+                    //sqlBC.BulkCopyTimeout = 30000;
                     //設定 NotifyAfter 属性，以便在每插入10000 条数据时，呼叫相应事件。 
                     sqlBC.NotifyAfter = 10000;
                     // sqlBC.SqlRowsCopied += new SqlRowsCopiedEventHandler(OnSqlRowsCopied);
