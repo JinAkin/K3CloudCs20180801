@@ -58,7 +58,8 @@ namespace K3CloudCs
                 builder.AppendFormat("{0}={1}&", key, HttpUtility.UrlEncode(val, Encoding.UTF8));
                 builder1.AppendFormat("{0}={1}&", key, @params[key]);
             }
-            builder.Append("sign=" + edbSignature(@params));            
+            builder.Append("sign=" + edbSignature(@params));
+            LogHelper.WriteFileLog(typeof(EdbLib), builder.ToString());
             byte[] bytesToPost = Encoding.UTF8.GetBytes(builder.ToString());
             HttpWebRequest httpWebRequest = null;
             try

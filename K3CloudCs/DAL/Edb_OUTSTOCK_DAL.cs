@@ -13,72 +13,92 @@ namespace K3CloudCs
         private string strcon;
         string date_type = "";
         string page_size = "";
+        string order_status = "";
         DataTable dtTrade;
+        DataColumnCollection dtTradeColum;
         DataTable dtTradeEntry;
+        DataColumnCollection dtTradeEntryColum;
         ConfigHelper config;
         public Edb_OUTSTOCK_DAL(string Constring,string strpage_size, string strdate_type)
         {
             config = new ConfigHelper();
             strcon = Constring;
             dtTrade = new DataTable();
+            dtTradeColum = null;
             string TradeFields = ConfigurationManager.AppSettings["TradeFields"];
-            string TradeValues = ConfigurationManager.AppSettings["TradeDefaultValues"];
+            string TradeTypes = ConfigurationManager.AppSettings["TradeTypes"];
             string[] Fields = TradeFields.Split(',');
-            string[] Values = TradeValues.Split(',');
-            if (Fields.Length > 0 && Values.Length > 0 && Fields.Length == Values.Length)
+            string[] Types = TradeTypes.Split(',');
+            if (Fields.Length > 0 && Types.Length > 0 && Fields.Length == Types.Length)
             {
-                CreateTable(dtTrade, Fields, Values);
+                CreateTable(dtTrade, Fields, Types,dtTradeColum);
             }
             dtTradeEntry = new DataTable();
+            dtTradeEntryColum = null;
             string TradeEntryFields = ConfigurationManager.AppSettings["TradeEntryFields"];
-            string TradeEntryValues = ConfigurationManager.AppSettings["TradeEntryDefaultValues"];
+            string TradeEntryTypes = ConfigurationManager.AppSettings["TradeEntryTypes"];
             string[] EntryFields = TradeFields.Split(',');
-            string[] EntryValues = TradeValues.Split(',');
-            if (EntryFields.Length > 0 && EntryValues.Length > 0 && EntryFields.Length == EntryValues.Length)
+            string[] EntryTypes = TradeEntryTypes.Split(',');
+            if (EntryFields.Length > 0 && EntryTypes.Length > 0 && EntryFields.Length == EntryTypes.Length)
             {
-                CreateTable(dtTradeEntry, EntryFields, EntryValues);
+                CreateTable(dtTradeEntry, EntryFields, EntryTypes,dtTradeEntryColum);
             }
             date_type = config.ReadValueByKey(ConfigurationFile.AppConfig, "date_type");
             page_size = config.ReadValueByKey(ConfigurationFile.AppConfig, "page_size");
+            order_status = config.ReadValueByKey(ConfigurationFile.AppConfig, "order_status");
         }
-        private void SqlBulkCopyInsert(string strTableName, DataTable dtData)
+        //private void SqlBulkCopyInsert(string strTableName, DataTable dtData)
+        //{
+        //    try
+        //    {
+        //        using (SqlBulkCopy sqlRevdBulkCopy = new SqlBulkCopy(strcon))//引用SqlBulkCopy  
+        //        {
+        //            sqlRevdBulkCopy.DestinationTableName = strTableName;//数据库中对应的表名  
+        //            sqlRevdBulkCopy.NotifyAfter = dtData.Rows.Count;//有几行数据  
+        //            sqlRevdBulkCopy.WriteToServer(dtData);//数据导入数据库  
+        //            sqlRevdBulkCopy.Close();//关闭连接  
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogHelper.WriteFileLog(typeof(Edb_OUTSTOCK_DAL), ex.ToString());
+        //    }
+        //}
+        private void StringToDB(string begin_time, string end_time, bool flag)
         {
-            try
-            {
-                using (SqlBulkCopy sqlRevdBulkCopy = new SqlBulkCopy(strcon))//引用SqlBulkCopy  
-                {
-                    sqlRevdBulkCopy.DestinationTableName = strTableName;//数据库中对应的表名  
-                    sqlRevdBulkCopy.NotifyAfter = dtData.Rows.Count;//有几行数据  
-                    sqlRevdBulkCopy.WriteToServer(dtData);//数据导入数据库  
-                    sqlRevdBulkCopy.Close();//关闭连接  
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteFileLog(typeof(Edb_OUTSTOCK_DAL), ex.ToString());
-            }
-        }	
-	    private void StringToDB(string begin_time,string end_time,bool flag)
-	    {
-            List<SqlParameter> pars = new List<SqlParameter>();            
-            pars.Add(new SqlParameter("@begin_time",begin_time));
+            List<SqlParameter> pars = new List<SqlParameter>();
+            pars.Add(new SqlParameter("@begin_time", begin_time));
             pars.Add(new SqlParameter("@end_time", end_time));
             pars.Add(new SqlParameter("@flag", flag));
             int i = SqlHelper.ExecuteNonQuery(strcon, CommandType.Text, "Delete from tb_JsonStream where flag=1 or (begin_time=@begin_time and end_time=@end_time);Insert Into tb_JsonStream(begin_time,end_time,flag) values (@begin_time,@end_time,@flag)", pars.ToArray());
 
-	    }
-        private void CreateTable(DataTable dt, string[] Fileds, string[] Values)
+        }
+        private void CreateTable(DataTable dt, string[] Fileds,string[] Types,DataColumnCollection dtColumn)
         {
             for (int i = 0; i < Fileds.Length; i++)
             {
                 DataColumn Column = new DataColumn();
                 //该列的数据类型
-                Column.DataType = Type.GetType("System.String");
+                Column.DataType = Type.GetType(Types[i]);
                 //该列得名称
                 Column.ColumnName = Fileds[i];
                 //该列得默认值
-                Column.DefaultValue = Values[i];
-
+                switch (Types[i])
+                {
+                    case "System.Double":
+                        Column.DefaultValue = 0;
+                        dtColumn.Add(Fileds[i], typeof(double));
+                        break;
+                    case "System.DateTime":
+                        Column.DefaultValue = DateTime.Now;
+                        dtColumn.Add(Fileds[i], typeof(DateTime));
+                        break;
+                    default:
+                        Column.DefaultValue = "";
+                        dtColumn.Add(Fileds[i], typeof(string));
+                        break;
+                }
+                
                 dt.Columns.Add(Column);
             }
         }
@@ -117,15 +137,14 @@ namespace K3CloudCs
                     {
                         string begin_time = sdr["begin_time"].ToString();
                         string end_time = sdr["end_time"].ToString();
-                        LoadInfo(date_type, begin_time, end_time,"未发货", StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
-                        LoadInfo(date_type, begin_time, end_time,"已发货", StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
+                        LoadInfo( begin_time, end_time, StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
                     }
                 }                
             }
         }
         public void DownloadOutToDB(string StrserviceUrl, string Strdbhost, string Strappkey, string Strappscret, string Strtoken)
         {
-            object strdt1 = SqlHelper.ExecuteScalar(strcon, CommandType.Text, "select top 1 tid_time from tb_trade order by tid_time desc");
+            object strdt1 = SqlHelper.ExecuteScalar(strcon, CommandType.Text, "select top 1 delivery_time from tb_trade order by delivery_time desc");
             try
             {
                 DateTime dt1;
@@ -141,8 +160,7 @@ namespace K3CloudCs
                 if (span.TotalHours> 1)
                 {
                     DateTime dt2 = dt1.AddDays(1);
-                    LoadInfo(date_type, dt1.ToString("yyyy-MM-dd HH:mm:ss"), dt2.ToString("yyyy-MM-dd HH:mm:ss"),"未发货", StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
-                    LoadInfo(date_type, dt1.ToString("yyyy-MM-dd HH:mm:ss"), dt2.ToString("yyyy-MM-dd HH:mm:ss"),"已发货", StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);                   
+                    LoadInfo(dt1.ToString("yyyy-MM-dd HH:mm:ss"), dt2.ToString("yyyy-MM-dd HH:mm:ss"), StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);                   
                 }
             }               
             catch(Exception ex)
@@ -150,7 +168,7 @@ namespace K3CloudCs
                 LogHelper.WriteFileLog(typeof(Edb_OUTSTOCK_DAL), ex.ToString());
             }
         } 
-        private void LoadInfo(string date_type,string begin_time,string end_time,string order_status, string StrserviceUrl, string Strdbhost, string Strappkey, string Strappscret, string Strtoken)
+        private void LoadInfo(string begin_time,string end_time, string StrserviceUrl, string Strdbhost, string Strappkey, string Strappscret, string Strtoken)
         {
             bool isSuccess = false;
             string strJson = string.Empty;
@@ -185,10 +203,10 @@ namespace K3CloudCs
                             JObject obj = (JObject)arr[x];
                             if (total_results == int.Parse(page_size))
                             {
-                                string tid_time = obj["tid_time"].ToString();
-                                if (dt < DateTime.Parse(tid_time))
+                                string delivery_time = obj["delivery_time"].ToString();
+                                if (dt < DateTime.Parse(delivery_time))
                                 {
-                                    dt = DateTime.Parse(tid_time);
+                                    dt = DateTime.Parse(delivery_time);
                                 }
                             }
                             if (IsExists(obj["tid"].ToString()) == false)
@@ -215,14 +233,16 @@ namespace K3CloudCs
                         if (arr != null && j != null)
                         {
                             dtTrade = JsonToDataTable(arr.ToString());
-                            SqlBulkCopyInsert("tb_Trade", dtTrade);
+                            //SqlBulkCopyInsert("tb_Trade", dtTrade,dtTradeColum);
+                            SqlHelper.InsertTable(strcon, dtTrade, "tb_Trade", dtTradeColum);
                             dtTradeEntry = JsonToDataTable(j.ToString());
-                            SqlBulkCopyInsert("tb_TradeEntry", dtTradeEntry);
+                            //SqlBulkCopyInsert("tb_TradeEntry", dtTradeEntry);
+                            SqlHelper.InsertTable(strcon, dtTradeEntry, "tb_TradeEntry", dtTradeEntryColum);
                         }
                         StringToDB(begin_time, end_time, true);
                         if (total_results == int.Parse(page_size) && dt < DateTime.Parse(end_time) && dt > DateTime.Parse(begin_time))
                         {
-                            LoadInfo(date_type, dt.ToString("yyyy-MM-dd HH:mm:ss"), end_time, order_status, StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
+                            LoadInfo(dt.ToString("yyyy-MM-dd HH:mm:ss"), end_time,  StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
                         }
                     }
                     else
@@ -244,7 +264,9 @@ namespace K3CloudCs
         private bool IsExists(string strBillNO)
         {            
             bool isEx = false;
-            object o = SqlHelper.ExecuteScalar(strcon, CommandType.Text, "select tid from tb_Trade where tid='" + strBillNO + "'");
+            List<SqlParameter> pars = new List<SqlParameter>();
+            pars.Add(new SqlParameter("@tid", strBillNO));
+            object o = SqlHelper.ExecuteScalar(strcon, CommandType.Text, "select tid from tb_Trade where tid=@tid union all select tid from tb_Trade_old where tid=@tid", pars.ToArray());
             if (o != null)
             {
                 isEx = true;

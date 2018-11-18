@@ -13,8 +13,8 @@ namespace K3CloudCs
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FrmMain());
-            Application.Run(new FrmOrder());
+            Application.Run(new FrmMain());
+            //Application.Run(new FrmOrder());
         }
 
     }

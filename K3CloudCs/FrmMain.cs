@@ -79,7 +79,7 @@ namespace K3CloudCs
         }
         private void Start()
         {
-            timerEdbSTKTRANSFER.Enabled = true;            
+            timerEdbSTKTRANSFER.Enabled = true;
             timerEdbOUTSTOCK.Enabled = true;
             timerEdbRETURNSTOCK.Enabled = true;
             timerK3CloudSalOut.Enabled = true;

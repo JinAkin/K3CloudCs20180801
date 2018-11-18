@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-
+using System.Linq;
 namespace K3CloudCs
 {
     public class Order_Dal
@@ -50,7 +50,7 @@ namespace K3CloudCs
             List<SqlParameter> pars = new List<SqlParameter>();
             pars.Add(new SqlParameter("@begin_time", begin_time));
             pars.Add(new SqlParameter("@end_time", end_time));
-            string sWhere = " Where tid_time>= @begin_time and tid_time<= @end_time";
+            string sWhere = " Where delivery_time>= @begin_time and delivery_time<= @end_time";
             if (tid.ToString().Trim() != "")
             {
                 pars.Add(new SqlParameter("@tid", tid));
@@ -61,7 +61,7 @@ namespace K3CloudCs
                 pars.Add(new SqlParameter("@delivery_status", order_status));
                 sWhere = sWhere + " and delivery_status =@delivery_status";
             }
-            using (SqlDataReader r = SqlHelper.ExecuteReader(strcon, CommandType.Text, "select top 50 * from tb_Trade " + sWhere, pars.ToArray()))
+            using (SqlDataReader r = SqlHelper.ExecuteReader(strcon, CommandType.Text, "select  * from tb_Trade " + sWhere + " union all select  * from tb_Trade_old " + sWhere, pars.ToArray()))
             {
                 while (r.Read())
                 {
@@ -254,7 +254,7 @@ namespace K3CloudCs
         private void CreateItemEntry(string tid, List<tid_item> items)
         {
             SqlParameter[] pars = new SqlParameter[] { new SqlParameter("@tid", tid) };
-            using (SqlDataReader r = SqlHelper.ExecuteReader(strcon, CommandType.Text, "select * from tb_TradeEntry where tid = @tid", pars))
+            using (SqlDataReader r = SqlHelper.ExecuteReader(strcon, CommandType.Text, "select * from tb_TradeEntry where tid = @tid union all select * from tb_TradeEntry_old where tid = @tid", pars))
             {
                 while (r.Read())
                 {
@@ -337,14 +337,23 @@ namespace K3CloudCs
             bool isContinue = true;
             while (isContinue == true)
             {
-                List<Item> ListItems = LoadInfo(date_type, dt.ToString(), end_time, order_status, StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
-                dt = getMaxDateTime(dt, ListItems);
+                List<Item> ListItems = LoadInfo(date_type, tid, dt.ToString(), end_time, order_status, StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
+                dt = DateTime.Parse(ListItems.OrderByDescending(x => x.delivery_time).First().delivery_time);
+                //dt = getMaxDateTime(dt, ListItems);
                 foreach (Item i in ListItems)
                 {
-                    if (i.tid.Contains(tid) == true)
+                    if(tid!="")
+                    {
+                        if (i.tid.Contains(tid) == true)
+                        {
+                            lItem.Add(i);
+                        }
+                    }
+                    else
                     {
                         lItem.Add(i);
                     }
+
                 }
                 if (page_size != "" || ListItems.Count == 0)
                 {
@@ -355,25 +364,25 @@ namespace K3CloudCs
                 }
             }
         }
-        private DateTime getMaxDateTime(DateTime dt,List<Item>lItems)
-        {
-            foreach(Item i in lItems)
-            {
-                try
-                {
-                    DateTime curDateTime = DateTime.Parse(i.tid_time);
-                    if (curDateTime > dt)
-                    {
-                        dt = curDateTime;
-                    }
-                }
-                catch
-                {
+        //private DateTime getMaxDateTime(DateTime dt,List<Item>lItems)
+        //{
+        //    foreach(Item i in lItems)
+        //    {
+        //        try
+        //        {
+        //            DateTime curDateTime = DateTime.Parse(i.tid_time);
+        //            if (curDateTime > dt)
+        //            {
+        //                dt = curDateTime;
+        //            }
+        //        }
+        //        catch
+        //        {
 
-                }
-            }
-            return dt;
-        }
+        //        }
+        //    }
+        //    return dt;
+        //}
         public List<tid_item> GetItemEntry(JArray j)
         {
             List<tid_item> ltid_item = new List<tid_item>();
@@ -740,7 +749,7 @@ namespace K3CloudCs
                 LogHelper.WriteFileLog(typeof(Edb_OUTSTOCK_DAL), ex.ToString());
             }
         }
-        private List<Item> LoadInfo(string date_type, string begin_time, string end_time, string order_status, string StrserviceUrl, string Strdbhost, string Strappkey, string Strappscret, string Strtoken)
+        private List<Item> LoadInfo(string date_type,string tid, string begin_time, string end_time, string order_status, string StrserviceUrl, string Strdbhost, string Strappkey, string Strappscret, string Strtoken)
         {
             List<Item> lItems = new List<Item>();
             bool isSuccess = false;
@@ -749,10 +758,11 @@ namespace K3CloudCs
             {
                 EdbLib edb = new EdbLib(StrserviceUrl, Strdbhost, Strappkey, Strappscret, Strtoken);
                 Dictionary<String, String> @params = edb.edbGetCommonParams("edbTradeGet");
-                if (date_type != "") @params["date_type"] = date_type;
+                //if (date_type != "") @params["date_type"] = date_type;
                 @params["begin_time"] = begin_time;
                 @params["end_time"] = end_time;
-                @params["order_status"] = order_status;
+                //@params["order_status"] = order_status;
+                if(tid!="") @params["tid"] = tid;
                 @params["page_no"] = "1";
                 @params["page_size"] = page_size;
                 strJson = edb.edbRequstPost(@params, out isSuccess);

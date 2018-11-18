@@ -139,7 +139,7 @@ namespace K3CloudCs
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             dgHead.DataSource = new BindingList<Item>(LItem);
-            //FormateHead();
+            FormateHead();
         }
 
         private void toolExpIn_Click(object sender, EventArgs e)

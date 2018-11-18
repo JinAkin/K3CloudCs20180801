@@ -199,6 +199,37 @@ namespace K3CloudCs
             return ExecuteNonQuery(connectionString, commandType, commandText, (SqlParameter[])null);
         }
 
+        public static void InsertTable(string connectionString, DataTable dt, string TabelName, DataColumnCollection dtColum)
+        {
+            if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlBulkCopy sqlBC = new SqlBulkCopy(connection))
+                {
+                    //一次批量的插入的数据量
+                    sqlBC.BatchSize = 1000;
+                    //超时之前操作完成所允许的秒数，如果超时则事务不会提交 ，数据将回滚，所有已复制的行都会从目标表中移除
+                    sqlBC.BulkCopyTimeout = 300;
+                    //設定 NotifyAfter 属性，以便在每插入10000 条数据时，呼叫相应事件。 
+                    sqlBC.NotifyAfter = 10000;
+                    // sqlBC.SqlRowsCopied += new SqlRowsCopiedEventHandler(OnSqlRowsCopied);
+                    //设置要批量写入的表
+                    sqlBC.DestinationTableName = TabelName;
+                    //自定义的datatable和数据库的字段进行对应
+                    //sqlBC.ColumnMappings.Add("id", "tel");
+                    //sqlBC.ColumnMappings.Add("name", "neirong");
+                    for (int i = 0; i < dtColum.Count; i++)
+                    {
+                        sqlBC.ColumnMappings.Add(dtColum[i].ColumnName.ToString(), dtColum[i].ColumnName.ToString());
+                    }
+                    //批量写入
+                    sqlBC.WriteToServer(dt);
+                }
+            }
+        }
         /// <summary> 
         /// 执行指定连接字符串,类型的SqlCommand.如果没有提供参数,不返回结果. 
         /// </summary> 

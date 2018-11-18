@@ -72,16 +72,17 @@ namespace K3CloudCs
                 {
                     JObject obj = (JObject)arr[i];
                     string stockname =obj["storage"].ToString() +";"+ obj["storage_name"].ToString();
-                    bool isExists = false;
-                    foreach(string s in slist)
-                    {
-                        if (s == stockname)
-                        {
-                            isExists = true;
-                            break;
-                        }
-                    }
-                    if (isExists == false)
+                    //bool isExists = slist.Contains(stockname);
+                    
+                    //foreach(string s in slist)
+                    //{
+                    //    if (s == stockname)
+                    //    {
+                    //        isExists = true;
+                    //        break;
+                    //    }
+                    //}
+                    if (slist.Contains(stockname) == false)
                     {
                         slist.Add(stockname);
                     }
